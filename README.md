@@ -10,6 +10,10 @@ Studios and Craven.
 - `privacy.html` - privacy policy
 - `styles.css` - shared styling
 - `admin/online.html` - protected Craven online player report
+- `admin/ghosts.html` - protected ghost report
+- `admin/runs.html` - protected run report
+- `admin/settings.html` - protected admin user management
+- `server/craven_admin_gateway.py` - localhost-only admin API gateway for reports and admin users
 - `assets/hero-craven.jpg` - previous landing page image
 - `assets/hero-craven-board.png` - current landing page gameplay banner
 
@@ -50,10 +54,11 @@ For Nginx, serve `/var/www/butterscotchstudios.org` as a static site and enable
 TLS with Certbot for `butterscotchstudios.org` and
 `www.butterscotchstudios.org`.
 
-The protected admin report lives at `/admin/online.html`. The browser calls
-`/admin/api/online`, and Nginx proxies that request to Nakama's
-`admin_online_players` RPC with the private `runtime.http_key` kept on the
-server.
+The protected admin reports live under `/admin/`. Nginx protects that path with
+Basic Auth, then proxies `/admin/api/*` to the localhost-only Craven admin
+gateway. The gateway calls Nakama report RPCs with the private
+`runtime.http_key` kept on the server, and manages named admin users in
+`/etc/craven-admin/users.json` plus `/etc/nginx/.htpasswd-craven-admin`.
 
 Example Nginx server block:
 

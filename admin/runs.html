@@ -4,12 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
-    <title>Online Players | Craven Admin</title>
+    <title>Runs | Craven Admin</title>
     <link rel="stylesheet" href="admin.css">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to report</a>
-
     <div class="admin-shell">
       <aside class="sidebar" aria-label="Admin navigation">
         <a class="admin-brand" href="online.html" aria-label="Craven Admin">
@@ -22,14 +21,11 @@
           </span>
           <span>Craven Admin</span>
         </a>
-
         <nav class="side-nav" aria-label="Admin sections">
-          <a class="active" href="online.html">
+          <a href="online.html">
             <svg viewBox="0 0 24 24" focusable="false">
               <path d="M16 11a4 4 0 1 0-8 0"></path>
               <path d="M4 20c.7-3.1 3.2-5 8-5s7.3 1.9 8 5"></path>
-              <path d="M18.5 8.5a3 3 0 0 1 2.2 2.9"></path>
-              <path d="M3.3 11.4a3 3 0 0 1 2.2-2.9"></path>
             </svg>
             <span>Online Players</span>
           </a>
@@ -41,7 +37,7 @@
             </svg>
             <span>Ghosts</span>
           </a>
-          <a href="runs.html">
+          <a class="active" href="runs.html">
             <svg viewBox="0 0 24 24" focusable="false">
               <path d="M4 19h16"></path>
               <path d="M5 17V5"></path>
@@ -60,7 +56,6 @@
             <span>Settings</span>
           </a>
         </nav>
-
         <div class="sidebar-status" aria-live="polite">
           <div>
             <span class="status-dot online"></span>
@@ -81,14 +76,10 @@
       <main id="main" class="dashboard">
         <header class="topbar">
           <div>
-            <h1>Online Players</h1>
+            <h1>Runs</h1>
             <p id="lastUpdated">Waiting for first refresh</p>
           </div>
           <div class="topbar-actions">
-            <span class="live-pill" id="autoState">
-              <span class="status-dot online"></span>
-              Auto refresh: On
-            </span>
             <button class="icon-button primary-action" id="refreshButton" type="button">
               <svg viewBox="0 0 24 24" focusable="false">
                 <path d="M20 7v5h-5"></path>
@@ -101,98 +92,60 @@
           </div>
         </header>
 
-        <section class="control-panel" aria-label="Report filters">
-          <label class="toggle-row">
-            <span>Auto refresh</span>
-            <input id="autoRefresh" type="checkbox" checked>
-            <span class="toggle-track" aria-hidden="true"></span>
-          </label>
+        <section class="control-panel run-controls" aria-label="Run filters">
           <label>
-            <span>Every</span>
-            <select id="refreshEvery">
-              <option value="5">5s</option>
-              <option value="15">15s</option>
-              <option value="30">30s</option>
-              <option value="60">60s</option>
-            </select>
-          </label>
-          <label class="toggle-row">
-            <span>Fresh only</span>
-            <input id="freshOnly" type="checkbox" checked>
-            <span class="toggle-track" aria-hidden="true"></span>
-          </label>
-          <label>
-            <span>Activity</span>
-            <select id="activityFilter">
+            <span>Outcome</span>
+            <select id="outcomeFilter">
               <option value="">All</option>
-              <option value="playing">Playing</option>
-              <option value="menu">Menu</option>
-              <option value="idle">Idle</option>
+              <option value="win">Win</option>
+              <option value="loss">Loss</option>
+              <option value="forfeit">Forfeit</option>
             </select>
           </label>
           <label>
-            <span>Max age</span>
-            <select id="maxAge">
-              <option value="120">120s</option>
-              <option value="300">5m</option>
-              <option value="900">15m</option>
-              <option value="3600">1h</option>
+            <span>Min ghost wins</span>
+            <select id="minGhostWins">
+              <option value="0">Any</option>
+              <option value="5">5+</option>
+              <option value="10">10</option>
+            </select>
+          </label>
+          <label>
+            <span>Hero</span>
+            <input id="heroFilter" type="text" placeholder="Any">
+          </label>
+          <label>
+            <span>Version</span>
+            <input id="versionFilter" type="text" placeholder="Any">
+          </label>
+          <label>
+            <span>Limit</span>
+            <select id="limit">
+              <option value="50">50</option>
+              <option value="100" selected>100</option>
+              <option value="250">250</option>
             </select>
           </label>
         </section>
 
-        <section class="stat-grid" aria-label="Presence summary">
+        <section class="stat-grid report-stat-grid" aria-label="Run summary">
           <article class="stat-card">
             <div>
-              <span><i class="status-dot online"></i>Online</span>
-              <strong id="onlineCount">0</strong>
+              <span><i class="status-dot playing"></i>Returned</span>
+              <strong id="runCount">0</strong>
             </div>
-            <svg viewBox="0 0 24 24" focusable="false">
-              <path d="M16 11a4 4 0 1 0-8 0"></path>
-              <path d="M4 20c.7-3.1 3.2-5 8-5s7.3 1.9 8 5"></path>
-            </svg>
-          </article>
-          <article class="stat-card blue">
-            <div>
-              <span><i class="status-dot playing"></i>Playing</span>
-              <strong id="playingCount">0</strong>
-            </div>
-            <svg viewBox="0 0 24 24" focusable="false">
-              <path d="M7 14h10"></path>
-              <path d="M9 12v4"></path>
-              <path d="M15 15h.01"></path>
-              <path d="M18 11a5 5 0 0 1 3 4.6V16a3 3 0 0 1-5.4 1.8L14.2 16H9.8l-1.4 1.8A3 3 0 0 1 3 16v-.4A5 5 0 0 1 6 11Z"></path>
-            </svg>
-          </article>
-          <article class="stat-card violet">
-            <div>
-              <span><i class="status-dot menu"></i>Menu</span>
-              <strong id="menuCount">0</strong>
-            </div>
-            <svg viewBox="0 0 24 24" focusable="false">
-              <path d="M8 7h10"></path>
-              <path d="M8 12h10"></path>
-              <path d="M8 17h10"></path>
-              <path d="M4 7h.01"></path>
-              <path d="M4 12h.01"></path>
-              <path d="M4 17h.01"></path>
-            </svg>
           </article>
           <article class="stat-card amber">
             <div>
-              <span><i class="status-dot stale"></i>Stale</span>
-              <strong id="staleCount">0</strong>
+              <span><i class="status-dot stale"></i>Wins</span>
+              <strong id="winCount">0</strong>
             </div>
-            <svg viewBox="0 0 24 24" focusable="false">
-              <path d="M12 7v5l3 2"></path>
-              <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
-            </svg>
           </article>
         </section>
 
         <section class="table-panel" aria-labelledby="tableTitle">
           <div class="table-header">
-            <h2 id="tableTitle"><span id="visibleCount">0</span> players</h2>
+            <h2 id="tableTitle"><span id="visibleCount">0</span> runs</h2>
             <button id="exportCsv" type="button">
               <svg viewBox="0 0 24 24" focusable="false">
                 <path d="M12 3v12"></path>
@@ -202,34 +155,32 @@
               Export CSV
             </button>
           </div>
-
           <div class="notice hidden" id="errorNotice" role="alert"></div>
-
           <div class="table-wrap">
             <table>
               <thead>
                 <tr>
                   <th scope="col">Player</th>
-                  <th scope="col">Activity</th>
+                  <th scope="col">Outcome</th>
                   <th scope="col">Hero</th>
                   <th scope="col">Day</th>
-                  <th scope="col">Phase</th>
                   <th scope="col">Ghost Wins</th>
                   <th scope="col">Run Life</th>
-                  <th scope="col">Last Seen</th>
+                  <th scope="col">Version</th>
+                  <th scope="col">Final Board</th>
+                  <th scope="col">Ended</th>
                 </tr>
               </thead>
-              <tbody id="playerRows"></tbody>
+              <tbody id="runRows"></tbody>
             </table>
             <div class="empty-state" id="emptyState">
-              <strong>No players found</strong>
-              <span>Try including stale records or increasing max age.</span>
+              <strong>No runs found</strong>
+              <span>Try widening the filters.</span>
             </div>
           </div>
         </section>
       </main>
     </div>
-
-    <script src="online.js" defer></script>
+    <script src="runs.js" defer></script>
   </body>
 </html>
