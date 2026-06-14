@@ -9,6 +9,7 @@ Studios and Craven.
 - `support.html` - support page
 - `privacy.html` - privacy policy
 - `styles.css` - shared styling
+- `admin/online.html` - protected Craven online player report
 - `assets/hero-craven.jpg` - previous landing page image
 - `assets/hero-craven-board.png` - current landing page gameplay banner
 
@@ -48,6 +49,11 @@ www.butterscotchstudios.org  A      172.105.155.225
 For Nginx, serve `/var/www/butterscotchstudios.org` as a static site and enable
 TLS with Certbot for `butterscotchstudios.org` and
 `www.butterscotchstudios.org`.
+
+The protected admin report lives at `/admin/online.html`. The browser calls
+`/admin/api/online`, and Nginx proxies that request to Nakama's
+`admin_online_players` RPC with the private `runtime.http_key` kept on the
+server.
 
 Example Nginx server block:
 
